@@ -1,5 +1,6 @@
 """
 Database models.
+admin login info: admin@exmaple.com/password1
 """
 from django.db import models
 from django.contrib.auth.models import (
@@ -15,12 +16,29 @@ class UserManager(BaseUserManager):
     # overwrite create_user func from BaseUserManager class
     def create_user(self, email, password=None, **extra_fields):
         """Create, save and return a new user."""
+
+        # dont create user if no email is provided
+        if not email:
+            raise ValueError('User must have an email address')
+
         # self.model refers to User model since its a UserManager
-        user = self.model(email=email, **extra_fields)
+        # normalize_email is part of baseUserManager class
+        user = self.model(email=self.normalize_email(email), **extra_fields)
         # set_password will encrypt password
         user.set_password(password)
         # dont need to but passing in using=self._db future proofs
         # this in case we ever add multiple DBs
+        user.save(using=self._db)
+        return user
+
+    # overwrite create_superuser func from BaseUserManager
+    def create_superuser(self, email, password):
+        """Create and return a new superuser"""
+        # call default create_user method
+        user = self.create_user(email, password)
+        # is_staff has to be true to login into admin area
+        user.is_staff = True
+        user.is_superuser = True
         user.save(using=self._db)
         return user
 
