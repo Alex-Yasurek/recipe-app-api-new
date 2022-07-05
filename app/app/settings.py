@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core'
+    # Apps
+    'core',
+    'user',
+    # Third-party extensions
+    'rest_framework',
+    'rest_framework.authtoken',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +136,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # set user model to our custom one
 AUTH_USER_MODEL = 'core.user'
+
+# use drf spectacular to create api schema for swagger
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
