@@ -3,6 +3,7 @@ from django.contrib.auth import (get_user_model, authenticate)
 from rest_framework import serializers
 from django.utils.translation import gettext as _
 
+
 class UserSerializer(serializers.ModelSerializer):
     """
         Serialzier for the user object.
@@ -25,9 +26,23 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Create and return a user with encrypted password
-            Will only be called is data was validated (eg: password min length >=5)
-            """
+            Will only be called is data was validated
+            (eg: password min length >=5)
+        """
         return get_user_model().objects.create_user(**validated_data)
+
+    def update(self, instance, validated_data):
+        """Overwrite update method on user serializer"""
+        # remove password from dictionary
+        password = validated_data.pop('password', None)
+        # call update method on model serializer base class
+        user = super().update(instance, validated_data)
+        # only update password if user sent one, if not leave original
+        if password:
+            user.set_password(password)
+            user.save()
+
+        return user
 
 
 class AuthTokenSerializer(serializers.Serializer):
