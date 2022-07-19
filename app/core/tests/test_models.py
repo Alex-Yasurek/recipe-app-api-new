@@ -1,8 +1,13 @@
 """
 Test for models.
 """
+from decimal import Decimal
 from django.test import TestCase
+# used to test the user model since we overwrite a default model
 from django.contrib.auth import get_user_model
+
+# need to import models when testing other non-user models
+from core import models
 """
 get_user_model makes sure we get whatever user model is
 set for the project. So if we overwrite the default user model,
@@ -49,3 +54,17 @@ class ModelTests(TestCase):
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_recipe(self):
+        """Test creating a recipe is successful"""
+        user = get_user_model().objects.create_user(
+            'test@example.com', 'testpass123'
+        )
+        recipe = models.Recipe.objects.create(
+            user=user,
+            title='Sample recipe',
+            time_minutes=5,
+            price=Decimal('5.50'),
+            description='Sample recipe description',
+        )
+        self.assertEqual(str(recipe), recipe.title)

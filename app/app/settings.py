@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # Apps
     'core',
     'user',
+    'recipe',
     # Third-party extensions
     'rest_framework',
     'rest_framework.authtoken',

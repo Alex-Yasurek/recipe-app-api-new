@@ -56,3 +56,5 @@ class UserAdmin(BaseUserAdmin):
 # If not it will try to use the defualt UserAdmin class and throw errors
 # since we changed it
 admin.site.register(models.User, UserAdmin)
+# When registering regular classes you just need to add the class
+admin.site.register(models.Recipe)
