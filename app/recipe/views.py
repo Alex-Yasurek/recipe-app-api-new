@@ -32,3 +32,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return serializers.RecipeSerializer
         # everything else use default
         return self.serializer_class
+
+    def perform_create(self, serializer):
+        """Create a new recipe"""
+        # When creating a new recipe in this viewset,
+        # also call this method to set user as current
+        # authenticated user making call. The Serializer
+        # we created does not have a user field
+        serializer.save(user=self.request.user)
