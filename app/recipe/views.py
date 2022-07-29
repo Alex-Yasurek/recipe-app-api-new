@@ -44,13 +44,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 class TagViewSet(mixins.UpdateModelMixin,
                  mixins.ListModelMixin,
+                 mixins.DestroyModelMixin,
                  viewsets.GenericViewSet):
     """Manage tags in the database."""
     # Mixins need to come first before genericviewset or it will
     # overwrite funcs needed.
     # In order to be able to be able to update a tag, we just add the
-    # updatemodelmixin and it creates everything needed. Same for listing
-    # tags.
+    # updatemodelmixin and it creates everything needed.
+    # Same for listing and deleting tags.
     serializer_class = serializers.TagSerializer
     queryset = Tag.objects.all()
     authentication_classes = [TokenAuthentication]
