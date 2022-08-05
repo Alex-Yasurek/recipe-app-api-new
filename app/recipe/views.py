@@ -42,18 +42,16 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-class TagViewSet(mixins.UpdateModelMixin,
-                 mixins.ListModelMixin,
-                 mixins.DestroyModelMixin,
-                 viewsets.GenericViewSet):
-    """Manage tags in the database."""
+class BaseRecipeAttrViewset(mixins.UpdateModelMixin,
+                            mixins.ListModelMixin,
+                            mixins.DestroyModelMixin,
+                            viewsets.GenericViewSet):
+    """Base viewset for recipe attributes"""
     # Mixins need to come first before genericviewset or it will
     # overwrite funcs needed.
     # In order to be able to be able to update a tag, we just add the
     # updatemodelmixin and it creates everything needed.
     # Same for listing and deleting tags.
-    serializer_class = serializers.TagSerializer
-    queryset = Tag.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -62,16 +60,23 @@ class TagViewSet(mixins.UpdateModelMixin,
         return self.queryset.filter(user=self.request.user).order_by('-name')
 
 
-class IngredientViewSet(mixins.UpdateModelMixin,
-                        mixins.ListModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
+class TagViewSet(BaseRecipeAttrViewset):
+    """Manage tags in the database."""
+    serializer_class = serializers.TagSerializer
+    queryset = Tag.objects.all()
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    # def get_queryset(self):
+    #     """Filter queryset for authenticated user"""
+    #     return self.queryset.filter(user=self.request.user).order_by('-name')
+
+
+class IngredientViewSet(BaseRecipeAttrViewset):
     """Manage ingredients in the database"""
     serializer_class = serializers.IngredientSerializer
     queryset = Ingredient.objects.all()
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        """Filter queryset to authenticated user"""
-        return self.queryset.filter(user=self.request.user).order_by("-name")
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    # def get_queryset(self):
+    #     """Filter queryset to authenticated user"""
+    #     return self.queryset.filter(user=self.request.user).order_by("-name")
