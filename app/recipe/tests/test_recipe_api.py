@@ -286,7 +286,6 @@ class PrivateRecipeApiTests(TestCase):
             'title': 'Tacos',
             'time_minutes': 30,
             'price': Decimal('2.50'),
-            'tags': [{'name': 'Mexican'}, {'name': 'Lunch'}],
             'ingredients': [{'name': 'Salt'}, {'name': 'Cilantro'}]
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
@@ -310,7 +309,6 @@ class PrivateRecipeApiTests(TestCase):
             'title': 'Salad',
             'time_minutes': 10,
             'price': Decimal('8.50'),
-            'tags': [{'name': 'Lunch'}],
             'ingredients': [{'name': 'Salt'}, {'name': 'Lemon'}]
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
