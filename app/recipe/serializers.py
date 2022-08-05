@@ -55,7 +55,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             # created var is boolean saying if it had to created
             # it or not. True = it had to create a new ingredient since
             # one didnt exists already
-            ingred_obj, created = Tag.objects.get_or_create(
+            ingred_obj, created = Ingredient.objects.get_or_create(
                 user=auth_user,
                 **ingredient
             )
