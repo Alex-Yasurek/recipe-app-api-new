@@ -59,3 +59,4 @@ admin.site.register(models.User, UserAdmin)
 # When registering regular classes you just need to add the class
 admin.site.register(models.Recipe)
 admin.site.register(models.Tag)
+admin.site.register(models.Ingredient)

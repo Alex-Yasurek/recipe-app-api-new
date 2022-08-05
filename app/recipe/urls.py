@@ -14,6 +14,8 @@ router.register('recipes', views.RecipeViewSet)
 
 router.register('tags', views.TagViewSet)
 
+router.register('ingredients', views.IngredientViewSet)
+
 # this will be used for reverse look up of urls
 app_name = 'recipe'
 
