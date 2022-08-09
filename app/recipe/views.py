@@ -64,6 +64,9 @@ class TagViewSet(BaseRecipeAttrViewset):
     """Manage tags in the database."""
     serializer_class = serializers.TagSerializer
     queryset = Tag.objects.all()
+
+    # Code below is added to base class since its shared with ingredients
+
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
     # def get_queryset(self):
