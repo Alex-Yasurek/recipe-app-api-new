@@ -1,8 +1,9 @@
 """Views for the recipe APIs"""
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from core.models import Recipe, Tag, Ingredient
 from recipe import serializers
 
@@ -27,9 +28,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Return the serializer class for request.
         This func returns a reference to a class so it can instantiate it."""
         # when list api is called (GET), use a different
-        # serializer than default
+        # serializer than default, same for image uploading
         if self.action == 'list':
             return serializers.RecipeSerializer
+        elif self.action == 'upload_image':
+            return serializers.RecipeImageSerializer
         # everything else use default
         return self.serializer_class
 
@@ -40,6 +43,24 @@ class RecipeViewSet(viewsets.ModelViewSet):
         # authenticated user making call. The Serializer
         # we created does not have a user field
         serializer.save(user=self.request.user)
+
+    # custom action: only accepts POST, only
+    # applies to detail portion of model viewset, path for custom action
+    @action(methods=['POST'], detail=True, url_path='upload-image')
+    def upload_image(self, request, pk=None):
+        """Upload an image to recipe"""
+        # get recipe of PK supplied
+        recipe = self.get_object()
+        # call get_serializer func to get serializer,
+        # since it returns a function we pass params
+        # as if we are calling it
+        serializer = self.get_serializer(recipe, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class BaseRecipeAttrViewset(mixins.UpdateModelMixin,

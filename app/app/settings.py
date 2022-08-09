@@ -147,3 +147,7 @@ AUTH_USER_MODEL = 'core.user'
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+# this setting helps images work when viewing API in browser
+SPECTACULAR_SETTINGS = {
+    'COMPONENT_SPLIT_REQUEST': True,
+}
