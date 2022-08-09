@@ -111,7 +111,7 @@ class RecipeDetailSerializer(RecipeSerializer):
     # listed there
     class Meta(RecipeSerializer.Meta):
         # we want fields inherited plus add description
-        fields = RecipeSerializer.Meta.fields + ['description']
+        fields = RecipeSerializer.Meta.fields + ['description', 'image']
 
 
 class RecipeImageSerializer(serializers.ModelSerializer):
