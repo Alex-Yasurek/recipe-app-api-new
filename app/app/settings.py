@@ -147,7 +147,7 @@ STATIC_ROOT = '/vol/web/static'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # set user model to our custom one
-AUTH_USER_MODEL = 'core.user'
+AUTH_USER_MODEL = 'core.User'
 
 # use drf spectacular to create api schema for swagger
 REST_FRAMEWORK = {
